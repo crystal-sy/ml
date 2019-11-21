@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- saved from url=(0024)http://192.168.1.7:8080/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HTML5上传图片预览</title>
+
+<script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+    .ui_button {
+        padding:10px;
+        background: #01AAED;
+        color: #fff;
+    }
+    .ui_button:hover {
+       opacity: 0.9;
+    }
+</style> 
+</head>
+<body>
+<!-- <h1>请选择图片文件：JPG/GIF</h1> -->
+<form name="form0" id="form0" action="/upload" enctype="multipart/form-data" method="post">
+    <label class="ui_button" style="font-size: 40px;" for="file0">上传文件</label>
+    <input type="file" name="file0" id="file0" style="position:absolute;clip:rect(0 0 0 0);">
+    <!-- <input type="file" name="file0" id="file0" multiple="multiple" /> -->
+    <br><img src="" style="width: 50%;height: 50%;margin-top: 20px;" id="img0">
+    <!-- <input style="width:100%;height:100px;font-size: 40px;font-weight:600" type="submit" class="btn btn-default" value="Upload"> -->
+</form>
+<button style="width:100%;height:100px;font-size: 40px;font-weight:600" id="submit" class="btn btn-default">Upload</button>
+
+<div style="margin-top: 20px; font-size: 50px; margin-right: 50px;">
+    <span class="label label-danger" id="danger" style="display: none;">图片不能为空</span>
+    <span class="label label-default" id="label1">结果</span>
+    <span id="result"></span>
+</div>
+
+<script>    
+$("#file0").change(function(){
+    var objUrl = getObjectURL(this.files[0]) ;
+    console.log("objUrl = "+objUrl) ;
+    if (objUrl) {
+        $("#img0").attr("src", objUrl) ;
+    }
+}) ;
+//建立一個可存取到該file的url
+function getObjectURL(file) {
+    var url = null ;
+    if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+    } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+    } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+    }
+    return url ;
+}
+
+$("#submit").click(()=>{
+    $("#result").text("");
+    $("#label1").text("识别中");
+    $("#submit").prop("disabled",true);
+    setTimeout(()=>{
+        upload();
+    },0)
+});
+
+function upload(){
+
+    var fileObj = $("#file0")[0].files[0];
+    if(fileObj == undefined){
+        $("#danger").css("display","block");
+        $("#submit").prop("disabled",false);
+        return;
+    }
+    $("#danger").css("display","none");
+    var formFile = new FormData();
+    formFile.append("file", fileObj); 
+    
+
+    $.ajax({
+        url: '/upload' ,
+        type: 'POST',
+        data: formFile,
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            console.log(result);
+            $("#label1").text("结果");
+            $("#result").text(result.result);
+            $("#submit").prop("disabled",false);
+        }
+    });
+}
+
+
+</script>
+
+</body></html>
