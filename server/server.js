@@ -34,17 +34,16 @@ app.post("/upload",(req,res,next)=>{
         //           console.error("改名失败"+err);
         //     }
         // });
-
-        const ls = spawn('python3', ['test.py',files.file.path]);
+        const ls = spawn('python3', ['../python/test.py',files.file.path]);
         ls.stdout.on('data', (data) => {
             res.setHeader("Access-Control-Allow-Origin","*")
             res.json({ result: data.toString()});  
             console.log(`stdout: ${data}`);
         });
-        
 
-        
-        // res.end(util.inspect({fields: fields, files: files}));
+        // ls.stderr.on('data', (data) => {
+        //     console.error(`stderr: ${data}`);
+        // });
     });
 });
 

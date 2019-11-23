@@ -33,7 +33,7 @@ image = image.astype('float32')
 image = 255-image
 image /= 255
 
-model2 = tf.keras.models.load_model("model.h5")
+model2 = tf.keras.models.load_model("../python/model.h5")
 
 pred = model2.predict(image.reshape(1, 28, 28, 1), batch_size=1)
 
