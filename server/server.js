@@ -2,7 +2,6 @@ var express = require("express");
 var formidable = require("formidable");
 var fs = require("fs");
 var util = require("util");
-var ws = require("ws");
 var http = require("http");
 var app = express();
 
