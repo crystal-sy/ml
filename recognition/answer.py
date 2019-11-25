@@ -51,6 +51,7 @@ for face_encoding in face_encodings:
     else:
         name = 'Unknown'
     face_names.append(name)
+    print("检测结果："+name)
 
     # 结果打上标签
     for (top, right, bottom, left), name in zip(face_locations, face_names):
