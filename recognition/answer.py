@@ -2,7 +2,7 @@
 # coding: utf-8
 # -*- coding:utf-8 -*-
 import sys
-import face-recognition as face_recognition
+import face_recognition 
 import cv2
 
 print("检测目标文件路径："+sys.argv[1])
