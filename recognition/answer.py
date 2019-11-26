@@ -2,11 +2,19 @@
 # coding: utf-8
 # -*- coding:utf-8 -*-
 import sys
-import face-recognition as face_recognition
+import face_recognition
 import cv2
 
 print("检测目标文件路径："+sys.argv[1])
 location_1 = sys.argv[1]
+# 正常文件结果集
+normal_results = []
+normal_results.append("normal\image0 name:zhangbozhi")
+normal_results.append("normal\image1 name:liudehua")
+normal_results.append("normal\image2 name:liuyifei")
+# 警告文件结果集
+warning_results = []
+warning_results.append("warning\image0 name:mayun")
 
 i = 0
 normal_known_faces = []
@@ -55,20 +63,19 @@ for face_encoding in face_encodings:
     result = None
     # 识别图片中人脸是否匹配已知图片
     warning_match = face_recognition.compare_faces(warning_known_faces, face_encoding, tolerance=0.5)
-    if warning_match[0]:
-        result = "warning_mayun"
-    else:
-        result = 'Unknown'
+    k = 0
+    result = 'Unknown'
+    for match in warning_match:
+        if match:
+            result = warning_results[k]
+        k = k + 1
 
     if result == 'Unknown':
         normal_match = face_recognition.compare_faces(normal_known_faces, face_encoding, tolerance=0.5)
-        if normal_match[0]:
-            result = "normal_zhang bozhi"
-        elif normal_match[1]:
-            result = "normal_liudehua"
-        elif normal_match[2]:
-            result = "normal_liuyifei"
-        else:
-            result = 'Unknown'
+        k = 0
+        for match in normal_match:
+            if match:
+                result = normal_results[k]
+            k = k + 1
 
     print("检测结果：" + result)
