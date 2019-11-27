@@ -11,9 +11,11 @@ normal_results = []
 normal_results.append("name:zhangbozhi")
 normal_results.append("name:liudehua")
 normal_results.append("name:liuyifei")
+
 # 警告文件结果集
 warning_results = []
 warning_results.append("warning:mayun")
+warning_results.append("warning:likai")
 
 i = 0
 normal_known_faces = []
