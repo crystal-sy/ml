@@ -1,6 +1,8 @@
+# -*- coding:utf-8 -*-
 import sys
 import face_recognition
 import cv2
+import os
 
 # print("检测目标文件路径："+sys.argv[1])
 location_1 = sys.argv[1]
@@ -15,10 +17,12 @@ warning_results.append("warning:mayun")
 
 i = 0
 normal_known_faces = []
+
 while(1 == 1):
     try:
         # 加载已知图片
-        known_image = face_recognition.load_image_file("normal/image"+str(i)+".jpg")
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "normal/image"+str(i)+".jpg"))
+        known_image = face_recognition.load_image_file(path)
         # 对图片进行编码，获取128维特征向量
         image_encoding = face_recognition.face_encodings(known_image)[0]
         # # 存为数组以便之后识别
@@ -33,7 +37,8 @@ warning_known_faces = []
 while(1 == 1):
     try:
         # 加载已知图片
-        warning_known_image = face_recognition.load_image_file("warning/image"+str(j)+".jpg")
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "warning/image"+str(j)+".jpg"))
+        warning_known_image = face_recognition.load_image_file(path)
         # 对图片进行编码，获取128维特征向量
         warning_image_encoding = face_recognition.face_encodings(warning_known_image)[0]
         # # 存为数组以便之后识别
