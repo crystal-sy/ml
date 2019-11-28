@@ -3,9 +3,23 @@ import sys
 import face_recognition
 import cv2
 import os
+from PIL import Image
 
 # print("检测目标文件路径："+sys.argv[1])
 location_1 = sys.argv[1]
+
+im = Image.open(location_1)
+
+size = im.size
+if size[0] > 1000:
+    if size[0] > size[1]:
+        rate = float(1000) / float(size[0])
+    else:
+        rate = float(750) / float(size[1])
+    new_size = (int(size[0] * rate), int(size[1] * rate))
+    new = im.resize(new_size, Image.BILINEAR)
+    new.save(location_1)
+
 # 正常文件结果集
 normal_results = []
 normal_results.append("name:zhangbozhi")
@@ -62,6 +76,9 @@ frame_number = 0
 face_locations = face_recognition.face_locations(unknown_image)
 # 对图片进行编码，获取128维特征向量
 face_encodings = face_recognition.face_encodings(unknown_image, face_locations)
+
+if len(face_encodings) == 0:
+    print ("Unknown") 
 
 for face_encoding in face_encodings:
     result = None

@@ -2,6 +2,7 @@ var express = require("express");
 var formidable = require("formidable");
 var fs = require("fs");
 var util = require("util");
+var path = require("path");
 var http = require("http");
 var app = express();
 
@@ -33,16 +34,19 @@ app.post("/upload",(req,res,next)=>{
         //           console.error("改名失败"+err);
         //     }
         // });
-        const ls = spawn('python3', ['../python/test.py',files.file.path]);
+
+        var pyPath = path.resolve(__filename,"../../recognition/answer.py");
+
+        const ls = spawn('python3', [pyPath,files.file.path]);
         ls.stdout.on('data', (data) => {
             res.setHeader("Access-Control-Allow-Origin","*")
             res.json({ result: data.toString()});  
             console.log(`stdout: ${data}`);
         });
 
-        // ls.stderr.on('data', (data) => {
-        //     console.error(`stderr: ${data}`);
-        // });
+        ls.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+        });
     });
 });
 
